@@ -51,7 +51,6 @@ export default defineConfig({
       {
         text: "Introduction",
         items: [
-          { text: "What is Vebel?", link: "/guide/what-is-vebel" },
           { text: "Getting Started", link: "/guide/getting-started" },
           { text: "Quick Reference", link: "/guide/quick-reference" },
         ],

@@ -3,7 +3,7 @@
 ## Installation
 
 ```bash
-npx vebel create my-app
+npx @vebeljs/vebel create my-app
 cd my-app
 npm start
 ```
