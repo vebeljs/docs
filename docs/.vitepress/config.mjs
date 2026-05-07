@@ -11,6 +11,13 @@ export default defineConfig({
     [
       "meta",
       {
+        name: "google-site-verification",
+        content: "axlte_OPnAGMlG-vydG4NZO_CuGiIHM7wUeSML2swBw",
+      },
+    ],
+    [
+      "meta",
+      {
         name: "keywords",
         content:
           "vebel, vebeljs, jsx framework, fine-grained reactivity, javascript framework",
