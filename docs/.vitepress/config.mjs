@@ -1,10 +1,33 @@
 import { defineConfig } from "vitepress";
 
-// https://vitepress.dev/reference/site-config
 export default defineConfig({
   title: "Vebel",
   description: "Lightweight JSX framework with fine-grained reactivity",
   base: "/docs/",
+  sitemap: {
+    hostname: "https://vebeljs.github.io/docs/",
+  },
+  head: [
+    [
+      "meta",
+      {
+        name: "keywords",
+        content:
+          "vebel, vebeljs, jsx framework, fine-grained reactivity, javascript framework",
+      },
+    ],
+    [
+      "meta",
+      { property: "og:title", content: "Vebel — Lightweight JSX Framework" },
+    ],
+    [
+      "meta",
+      {
+        property: "og:description",
+        content: "Lightweight JSX framework with fine-grained reactivity",
+      },
+    ],
+  ],
   themeConfig: {
     logo: "/logo.svg",
     nav: [
