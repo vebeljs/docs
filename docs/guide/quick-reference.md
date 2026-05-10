@@ -568,3 +568,305 @@ defineRoutes(
   },
 );
 ```
+
+## DOM Refs
+
+Create a reference to access DOM elements directly.
+
+### useElementRef()
+
+```jsx
+const ref = useElementRef(tag?);
+```
+
+### Features
+
+`useElementRef()` is mainly used for:
+
+- direct DOM access
+- element measurements
+- focus management
+- scrolling
+- manual DOM manipulation
+
+Unlike state, refs do not trigger re-renders.
+
+They are meant for storing element references, not reactive UI values.
+
+Values stored inside refs persist across renders without causing updates.
+
+### Basic Example
+
+```jsx
+function App() {
+  const divRef = useElementRef("div");
+
+  setEffect(() => {
+    divRef.el.style.backgroundColor = "navy";
+  });
+
+  return <div ref={divRef}>...</div>;
+}
+```
+
+### Returned Object
+
+```jsx
+{
+  (el, _tag);
+}
+```
+
+`el`: The attached DOM element.
+
+`_tag`: The expected element tag type.
+
+Example:
+
+```jsx
+const divRef = useElementRef("div");
+```
+
+returns:
+
+```jsx
+{
+  el: HTMLDivElement,
+  _tag: "div"
+}
+```
+
+**Providing a tag enables proper element _type suggestions_** such as:
+
+```jsx
+divRef.el.style;
+divRef.el.scrollTop;
+divRef.el.focus();
+```
+
+### Generic Usage
+
+If no tag is provided, the ref can attach to any element.
+
+```jsx
+const ref = useElementRef();
+```
+
+### Restrictions
+
+::: warning Ref limitations
+
+A ref instance can only be attached to a single element.
+
+```jsx
+<div ref={myRef} />
+<button ref={myRef} /> // invalid
+```
+
+Typed refs can only be attached to matching elements.
+
+```jsx
+const divRef = useElementRef("div");
+
+<div ref={divRef} />      // valid
+<button ref={divRef} />   // invalid
+```
+
+:::
+
+## Lazy-load and Await
+
+Lazy-load components using dynamic imports.
+
+### load()
+
+```jsx
+const Component = load(
+  importFunction,
+  exportKey?
+);
+```
+
+### Features
+
+`load()` creates an async component that loads only when needed.
+
+This helps reduce initial bundle size and improves loading performance.
+
+The returned component can only be rendered inside `<Await />`.
+
+### Parameters
+
+### `importFunction`
+
+Function returning a dynamic import.
+
+```jsx
+() => import("./Component");
+```
+
+### `exportKey`
+
+Name of the exported component to load.
+
+```jsx
+load(() => import("./Comp"), "Navbar");
+```
+
+If omitted, `"default"` is used automatically.
+
+### Default Export Example
+
+```jsx
+const Navbar = load(
+  () => import("../components/Navbar"),
+  // take "default" as default argument automatically
+);
+```
+
+Used for:
+
+```jsx
+export default Navbar;
+```
+
+### Named Export Example
+
+```jsx
+const Navbar = load(() => import("../components/Navbar"), "Navbar");
+```
+
+Used for:
+
+```jsx
+export { Navbar };
+```
+
+---
+
+### Await
+
+Render fallback UI while async components are loading.
+
+```jsx
+<Await loader={LoaderComponent}>
+  <AsyncComponent />
+</Await>
+```
+
+### Features
+
+`<Await />` handles rendering async components created using `load()`.
+
+The `loader` prop renders temporary UI until all async imports resolve.
+
+### Basic Example
+
+```jsx
+const Navbar = load(() => import("../components/Navbar"));
+
+function App() {
+  return (
+    <Await loader={() => <h1>loading...</h1>}>
+      <Navbar />
+    </Await>
+  );
+}
+```
+
+### Multiple Async Components
+
+`<Await />` can handle multiple async components together.
+
+```jsx
+<Await loader={() => "loading..."}>
+  <Navbar />
+  <Footer />
+</Await>
+```
+
+The loader remains visible until all async components finish loading.
+
+::: warning Async component restriction
+
+Components created using `load()` must be rendered inside `<Await />`.
+
+```jsx
+<Navbar /> // invalid
+
+// valid
+<Await loader={() => "loading..."}>
+  <Navbar />
+</Await>
+```
+
+:::
+
+## Portal
+
+Render UI outside the main DOM tree while keeping it connected to the component hierarchy.
+
+### Syntax
+
+```jsx
+<Portal target={element?}>
+  content
+</Portal>
+```
+
+### Features
+
+Content inside `<Portal />` renders outside the normal parent DOM structure but still behaves as part of the same application tree.
+
+This is useful for:
+
+- modals
+- dialogs
+- tooltips
+- dropdowns
+- overlays
+
+Portals help avoid:
+
+- z-index conflicts
+- overflow clipping
+- positioning issues
+
+### Basic Example
+
+```jsx
+function App() {
+  return (
+    <Portal>
+      <div className="modal">Modal Content</div>
+    </Portal>
+  );
+}
+```
+
+By default, portal content is rendered into:
+
+```jsx
+document.body;
+```
+
+### Custom Target
+
+Use the `target` prop to render into a specific element.
+
+### Behavior
+
+Even though the DOM is rendered outside the main tree:
+
+- state still works
+- events still work
+- context remains connected
+- reactivity is preserved
+
+The portal behaves like a normal part of the component tree.
+
+::: tip Common usage
+
+`<Portal />` is primarily designed for overlays and floating UI where normal DOM nesting causes layout or stacking issues.
+
+:::
