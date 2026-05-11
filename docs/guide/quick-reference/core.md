@@ -477,98 +477,6 @@ function App() {
 
 :::
 
-## Routing
-
-Map URLs to components and control what gets rendered for each path.
-
-### defineRoutes()
-
-Routes are created using:
-
-```jsx
-defineRoutes(routes, globalConfig?);
-```
-
-Each route path is linked to a component.
-
-Routes can also be nested and share layouts for consistent page structure.
-
-### Basic Example
-
-```jsx
-defineRoutes({
-  "/": LandingPage,
-  "/docs": {
-    layout: DocsLayout,
-    children: {
-      "/": QuickStart,
-      "/installation": {
-        component: Installation,
-        config: {
-          documentTitle: "Installation and setup",
-        },
-      },
-    },
-  },
-});
-
-renderApp();
-```
-
-### Route Features
-
-- nested routes
-- shared layouts
-- route config
-- middleware
-- async route guards
-- loaders
-
-By default, `renderApp()` starts at `/`.
-
-A custom initial route can also be provided `renderApp(initialPath?)`.
-
-### Middleware
-
-Middleware lets you run logic between route transitions.
-
-Middleware can be:
-
-- synchronous
-- asynchronous
-
-When using async middleware, you can provide a `loader` to render fallback UI while it resolves.
-
-Global configuration can also be passed as the second argument to `defineRoutes()`.
-
-### Middleware Example
-
-```jsx
-defineRoutes(
-  {
-    "/": LandingPage,
-    "/login": {
-      component: Login,
-      middleware: ({ redirect }) => {
-        // override global middleware
-        if (isLoggedIn()) {
-          redirect("/");
-        }
-      },
-    },
-  },
-  // global configuration
-  {
-    layout: DocsLayout,
-    middleware: async () => {
-      // async middleware
-      await checkAuth();
-    },
-    loader: () => <p>Loading...</p>,
-  },
-);
-```
-
 ## DOM Refs
 
 Create a reference to access DOM elements directly.
@@ -868,5 +776,57 @@ The portal behaves like a normal part of the component tree.
 ::: tip Common usage
 
 `<Portal />` is primarily designed for overlays and floating UI where normal DOM nesting causes layout or stacking issues.
+
+:::
+
+## Route Effect
+
+Run logic whenever the current route changes.
+
+### useRouteEffect()
+
+```jsx
+useRouteEffect((path) => {
+  // route changed
+});
+```
+
+### Features
+
+`useRouteEffect()` is mainly useful inside layout components or persistent wrappers that do not re-render during navigation.
+
+It allows you to react to route changes even when the component itself stays mounted.
+
+### Example
+
+```jsx
+function DocsLayout({ Child }) {
+  useRouteEffect((path) => {
+    console.log(
+      "Route changed:",
+      path(), // returns the current active route.
+    );
+  });
+
+  return (
+    <div>
+      <Navbar />
+      <Child />
+    </div>
+  );
+}
+```
+
+### Why use `useRouteEffect()`?
+
+::: tip Best place to use
+
+Layout components usually remain mounted between route transitions.
+
+Because of that, normal lifecycle logic may not run again during navigation.
+
+`useRouteEffect()` solves this by running whenever the route changes.
+
+`useRouteEffect()` is most useful inside shared layouts and persistent components that survive route transitions.
 
 :::

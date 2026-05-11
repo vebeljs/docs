@@ -52,7 +52,20 @@ export default defineConfig({
         text: "Introduction",
         items: [
           { text: "Getting Started", link: "/guide/getting-started" },
-          { text: "Quick Reference", link: "/guide/quick-reference" },
+          {
+            text: "Quick Reference",
+            items: [
+              {
+                text: "Core APIs",
+                link: "/guide/quick-reference/core",
+              },
+
+              {
+                text: "Navigation",
+                link: "/guide/quick-reference/navigation",
+              },
+            ],
+          },
         ],
       },
       {
