@@ -231,4 +231,4 @@ function App() {
 ### Passing reactive props
 
 If you pass `state` directly as props, the child cannot determine whether it is reactive or not.
-Reactive parent values should be accessed using [`fromParent()`](/guide/quick-reference#reactive-props).
+Reactive parent values should be accessed using [`fromParent()`](/guide/quick-reference/core#reactive-props).
