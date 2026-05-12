@@ -33,6 +33,7 @@ defineRoutes({
       },
     },
   },
+  "*": NotFoundPage,
 });
 
 renderApp();
@@ -46,6 +47,22 @@ renderApp();
 - middleware
 - async route guards
 - loaders
+
+Use the wildcard route `'*'` to handle routes that do not exist.
+
+```js
+{
+  '*': NotFoundPage
+}
+```
+
+If a user tries to access a route that is not registered, the `NotFoundPage` component will render automatically.
+
+```jsx
+function NotFoundPage() {
+  return <h1>404. Page not found.</h1>;
+}
+```
 
 By default, `renderApp()` starts at `/`.
 

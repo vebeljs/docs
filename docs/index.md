@@ -1,5 +1,4 @@
 ---
-# https://vitepress.dev/reference/default-theme-home-page
 layout: home
 
 hero:
@@ -13,6 +12,9 @@ hero:
     - theme: alt
       text: View on GitHub
       link: https://github.com/vebeljs/vebel
+    - theme: alt
+      text: NPM Package
+      link: https://www.npmjs.com/package/@vebeljs/vebel
 
 features:
   - title: Reactivity

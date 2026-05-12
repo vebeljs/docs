@@ -40,7 +40,6 @@ export default defineConfig({
     nav: [
       { text: "Home", link: "/" },
       { text: "Guide", link: "/guide/getting-started" },
-      { text: "GitHub", link: "https://github.com/vebeljs/vebel" },
     ],
 
     outline: {
@@ -90,7 +89,10 @@ export default defineConfig({
       },
     ],
 
-    socialLinks: [{ icon: "github", link: "https://github.com/vebeljs/vebel" }],
+    socialLinks: [
+      { icon: "github", link: "https://github.com/vebeljs/vebel" },
+      { icon: "npm", link: "https://www.npmjs.com/package/@vebeljs/vebel" },
+    ],
 
     footer: {
       message: "Released under the MIT License.",
